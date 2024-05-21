@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: "ms-venta"
+  cloud:
+    azure:
+      compatibility-verifier:
+        enabled: false
+      keyvault:
+        secret:
+          property-sources[0]:
+            name: key-vault-property-source-1
+            endpoint: https://secretosmarcoanv.vault.azure.net/
+          property-source-enabled: true
+      servicebus:
+        #connection-string: ${secreto-service-bus}
+        namespace: servicebusmarco
+    function:
+      #definition: consume;supply
+      definition: supply
+    stream:
+        bindings:
+          #consume-in-0:
+          #  destination: colaregistro
+            # If you use Service Bus Topic, add the following configuration
+            # group: ${SUBSCRIPTION_NAME}
+          supply-out-0:
+            destination: colaregistro
+        poller:
+            fixed-delay: 60000
+            initial-delay: 0
+        servicebus:
+            bindings:
+              #consume-in-0:
+              #  consumer:
+              #    auto-complete: false
+              supply-out-0:
+                producer:
+                  entity-type: queue
+
+
+server:
+  port: 9090
+
