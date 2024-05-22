@@ -6,6 +6,7 @@ spring:
       compatibility-verifier:
         enabled: false
       keyvault:
+        tenant-id: 4aa8611e-d440-48ec-9ea3-d4d8ff6fa704
         secret:
           property-sources[0]:
             name: key-vault-property-source-1
