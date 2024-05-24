@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_1ba0b20a910a472ba52c93c3d35be582 }}/marcoanv13/spring-boot-docker:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_1ba0b20a910a472ba52c93c3d35be582 }}/marcoanv13/spring-boot-docker:v1
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'mscontenedornuevo'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_3864de78d9f145bbaee693cdcdbc9db6 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_1ba0b20a910a472ba52c93c3d35be582 }}/marcoanv13/spring-boot-docker:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_1ba0b20a910a472ba52c93c3d35be582 }}/marcoanv13/spring-boot-docker:v1'
