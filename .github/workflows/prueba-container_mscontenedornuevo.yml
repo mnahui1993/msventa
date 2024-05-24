@@ -26,12 +26,7 @@ jobs:
         username: ${{ secrets.AzureAppService_ContainerUsername_1ba0b20a910a472ba52c93c3d35be582 }}
         password: ${{ secrets.AzureAppService_ContainerPassword_3bdf35ca5f4942e4ac21eb4a118702b4 }}
 
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v3
-      with:
-        push: false
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_1ba0b20a910a472ba52c93c3d35be582 }}/marcoanv13/spring-boot-docker:v1
-        file: ./Dockerfile
+  
 
   deploy:
     runs-on: ubuntu-latest
