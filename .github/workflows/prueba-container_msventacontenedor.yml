@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - msventacontenedor
+
+on:
+  push:
+    branches:
+      - prueba-container
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_9f845ac8aff4418095f92be2af7b9ddb }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_05d1fe6db69e4177a071fed3c7d3b88d }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_9f845ac8aff4418095f92be2af7b9ddb }}/marcoanv13/spring-boot-docker:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'msventacontenedor'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_c0b804588ab240568c5e5aa04cb351cd }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_9f845ac8aff4418095f92be2af7b9ddb }}/marcoanv13/spring-boot-docker:${{ github.sha }}'
